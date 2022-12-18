@@ -1,0 +1,23 @@
+
+Compile and Execute Instructions:
+    1) Running "make all" compiles everything the code needs to run.
+    2) Run "make run" to generate 800 by 800 pixels ppm images and "make run_edge" for some edge cases.
+        - Appropriate ppm files with are created within the data folder.
+        - The ppm images also print to Standard Out (can be turned off via Wireframe::output).
+        - Lines render antialiased by default but can be tunred off via Wireframe::plot.
+    3) ImageMagick wasn't working on my VM, so I wrote ppm3-to-png.py to view the images using png conversion.
+        - More info can be found in the ppm3-to-png.py file.
+        - Run "make generate_pngs" to produce pngs from any generated ppms.
+        - Conversion sometimes may not work if the supplied image is too big.
+    4) Run "make clean" to delete any generated files.
+
+Bresenham's Algorithm:
+    My implementation works by reducing all the cases into one general that can be run under the same for loop.
+    I will explain it by breaking down the cases. More info can be found in comments within Wireframe::bresenhamRasterize.
+    First, I get rid of half of the cases by making sure the second / upper vertex has the greater x value.
+    Second, I half the cases again by considering all negative slopes as their equivalent positive slope cases.
+    Thereby, this eliminates all negative slopes.
+    I do this by reflecting the second / upper vertex over the line y = (the first vertex's y component) at the start 
+    then reflecting each point back over the same line when its time to plot the point to the Pixel Grid.
+    Third, I reduce the last two cases (being slopes from 1 to inf vs slopes from 0 to 1) by simply switching what 
+    axis is iterated over. For slopes from 0 to 1, the x-axis is iterated over, and for 1 to inf, it's the y-axis.
